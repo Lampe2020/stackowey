@@ -21,5 +21,5 @@ Stack-based 2D esolang
 > [!TIP]
 > - to multiply `a*b`, loop `b` times adding `a` to itself
 > - to subtract `a-b`, add (`(NOT b) + 1`) to `a`
-> - to divide `a/b`, loop subtracting `b` from `a` (or what's left of `a` after the previous iterations) and count how often you loop
+> - to divide `a/b`, loop subtracting `b` from `a` (or what's left of `a` after the previous iterations) and count how often you loop until `a<=0`
 >     - Conveniently, this also leaves you with `a (mod b)`
