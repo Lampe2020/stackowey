@@ -48,14 +48,6 @@ bool read_source(const char* source_path) {
     return true;
 }
 
-// Puts the result of a*b into res, if it fits in one uint64_t res[0]=0 and res[1]=a*b, otherwise res[0]=(a*b)%UINT64_MAX and res[1]=(a*b)-((a*b)%UINT64_MAX)
-// Thanks to https://www.reddit.com/r/C_Programming/comments/14hfy57/comment/jpaxwr8/
-static inline void mul(uint64_t res[2], uint64_t a, uint64_t b) {
-    __uint128_t r= (__uint128_t)a * b;
-    res[0]       = r >> 64;
-    res[1]       = r & (uint64_t)-1;
-}
-
 int main(int argc, char* argv[], char* envp[]) {
     for (int i= 0; i < argc; i++)
         std::cout << argv[i] << std::endl;
