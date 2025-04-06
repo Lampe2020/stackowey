@@ -4,8 +4,6 @@ Stack-based 2D esolang
 ## Commands
 |            ASCII Character             |                               Name                               | Description                                                                                                        |
 | :------------------------------------: | :--------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------- |
-|                  `9`                   |                            "tailring"                            | Halt                                                                                                               |
-|           *all other bytes*            |                                                                  | No-op                                                                                                              |
 |                  `/`                   |                             "Bounce"                             | Pop two values off the stack. Bounce off if the first one is greater than the second one.                          |
 |                  `\`                   |                           "Backbounce"                           | Pop two values off the stack. Bounce off if the first one is lower than the second one.                            |
 |                  `?`                   |                              "Huh"                               | Get input from the user. Each character is pushed to the stack as its unicode codepoint.                           |
@@ -17,6 +15,7 @@ Stack-based 2D esolang
 |                  `@`                   |                           "Whirlpool"                            | Pop one value off the stack, call it n and push a copy of the n:th stack element to the top of the stack           |
 |                  `8`                   |                            "Dubring"                             | Push the current coordinates to the stack and continue straight ahead                                              |
 |                  `9`                   |                            "Tailring"                            | Halt                                                                                                               |
+|           *all other bytes*            |                            "Impostor"                            | No-op                                                                                                              |
 
 > [!NOTE]
 > - to multiply `a*b`, loop `b` times adding `a` to itself
