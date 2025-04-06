@@ -17,7 +17,7 @@ Stack-based 2D esolang
 |                  `9`                   |                            "Tailring"                            | Halt                                                                                                               |
 |           *all other bytes*            |                            "Impostor"                            | No-op                                                                                                              |
 
-> [!NOTE]
+> [!TIP]
 > - to multiply `a*b`, loop `b` times adding `a` to itself
 > - to subtract `a-b`, subtract `b` 2 times from itself (effectively negating it), then add it to `a`
 > - to divide `a/b`, loop subtracting `b` from `a` (or what's left of `a` after the previous iterations) and count how often you loop
