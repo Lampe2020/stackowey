@@ -36,34 +36,55 @@ void error_out(ErrorCode err, std::string msg) {
     std::exit(err);
 }
 
+bool dev_mode= false;
 const std::vector<uint64_t> stack{ 42ull };
+std::vector<std::string> playfield;
 
-char** source;
-
-bool read_source(const char* source_path) {
-
-    std::ifstream source(source_path);
+bool read_source_from_stream(std::istream& source) {
     if (source.fail())
         return false;
     std::string line;
     std::getline(source, line);
     if (line[0] == '#' && line[1] == '!')
         std::getline(source, line); // Ignore the shebang line if it exists
-    const uint linelen= line.size();
-    while (!source.eof()) {
-        if (line.size() != linelen)
+    playfield.push_back(line);
+    const uint64_t linesize= playfield[0].size();
+    while (std::getline(source, line)) {
+        if (line.size() != linesize)
             error_out(E_SYNTAX, "Source file malformatted: not rectangular!");
-        std::getline(source, line);
+        playfield.push_back(line);
     }
     return true;
 }
 
+bool read_source(const char* source_path) {
+    std::ifstream source(source_path);
+    return read_source_from_stream(source);
+}
+
 int main(int argc, char* argv[], char* envp[]) {
     std::atexit(cleanup);
+
     for (int i= 0; i < argc; i++)
         std::cout << argv[i] << std::endl;
 
-    //TODO: parse the arguments and interpret the specified source file
+    if (argc == 1) {
+        read_source_from_stream(std::cin);
+    } else if (argc >= 2 && argv[1][0] != '-') {
+        read_source(argv[1]);
+    } else if (argc > 1 && argv[1][0] == '-') {
+        if (argv[1] == "-d" || argv[1] == "--dev") {
+            std::cout << "Development mode enabled!" << std::endl;
+            dev_mode= true;
+        }
+        if (argc >= 2)
+            read_source(argv[2]);
+        else
+            read_source_from_stream(std::cin);
+    } else
+        read_source(argv[1]);
+    
+    //TODO: Start parsing!
 
     return 0;
 }
