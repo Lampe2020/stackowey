@@ -1,3 +1,4 @@
+// kate: replace-tabs on; indent-width 4; indent-mode cstyle;
 #pragma once
 #include <bitset>
 #include <type_traits>
