@@ -2,6 +2,7 @@
 #include "bitset.hpp"
 #include "magic_enum.hpp"
 #include <cstdint>
+#include <ctime>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -19,8 +20,18 @@ std::string getErrorName(ErrorCode err) {
 }
 
 void error_out(ErrorCode err, std::string msg) {
-    if (err != E_EXIT)
-        std::cerr << "Uncaught " << getErrorName(err) << ": "
+    if (err == E_SUCCESS) {
+        std::cerr << getErrorName(err) << '[' << err << "]: "
+                  << (((bool)(time(NULL) % 2)) ?
+                      "Mission accomplished. That’s the problem" :
+                      "Unexpected lack of failure")
+                  << '.' << std::endl;
+                  return; // Try to continue
+    }
+    else if (err == E_EXIT)
+        std::exit(0);
+    else
+        std::cerr << "Uncaught " << getErrorName(err) << '[' << err << ']' << ": "
                   << ((bool)msg.size() ? msg : std::to_string(err)) << std::endl;
     std::exit(err);
 }
