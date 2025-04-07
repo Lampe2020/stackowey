@@ -41,7 +41,6 @@ const std::vector<uint64_t> stack{ 42ull };
 char** source;
 
 bool read_source(const char* source_path) {
-    std::atexit(cleanup);
 
     std::ifstream source(source_path);
     if (source.fail())
@@ -60,6 +59,7 @@ bool read_source(const char* source_path) {
 }
 
 int main(int argc, char* argv[], char* envp[]) {
+    std::atexit(cleanup);
     for (int i= 0; i < argc; i++)
         std::cout << argv[i] << std::endl;
 
