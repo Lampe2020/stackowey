@@ -8,6 +8,7 @@
 #include <fstream>
 #include <iostream>
 #include <locale>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -17,6 +18,26 @@ enum Direction {
     LEFT = uint8_t(2),
     UP   = uint8_t(3),
 };
+
+const char* direction_names[4]= { "east", "south", "west", "north" };
+const std::map<const char, const char*> command_names= {
+    { '/', "bounce" },  { '\\', "backbounce" }, { '?', "huh" },
+    { '!', "hah" },     { '%', "splot" },       { '0', "oh" },
+    { '1', "itch" },    { '2', "nigh" },        { '3', "chan" },
+    { '4', "fire" },    { '5', "lamp" },        { '6', "glorp" },
+    { '7', "wa-ding" }, { '+', "cross" },       { '_', "stumble" },
+    { '#', "grille" },  { '@', "whirlpool" },   { '8', "dubring" },
+    { '9', "tailring" }
+};
+
+std::string get_command_name(char command) {
+    const std::map<const char, const char*>::const_iterator it=
+    command_names.find(command);
+    if (it == command_names.end())
+        return "impostor";
+    else
+        return it->second;
+}
 
 bool source_from_stdin= false;
 bool dev_mode         = false;
@@ -117,12 +138,6 @@ void send_output() {
     stack.pop_back(); // Actually remove the value from the stack
 }
 
-void log_instruction() {
-    
-    if (dev_mode)
-        debug_info << 0;
-}
-
 int main(int argc, char* argv[], char* envp[]) {
     std::locale::global(std::locale("C.UTF-8"));
 
@@ -150,10 +165,20 @@ int main(int argc, char* argv[], char* envp[]) {
     } else
         read_source(argv[1]);
 
+    char current_command= '9'; // Halt if nothing is given
+    if (linelen == 0 || playfield.size() == 0)
+        error_out(E_SYNTAX, "Gimme nuffin', get nuffin'.");
     while (true) {
-        if (dev_mode)
-            debug_info << "";
-        switch (playfield[pos[0] % playfield.size()][pos[1] % linelen]) {
+        pos[0]         = pos[0] % playfield.size();
+        pos[1]         = pos[1] % linelen;
+        current_command= playfield[pos[0]][pos[1]];
+        if (dev_mode) {
+
+            debug_info << "Moving " << direction_names[direction % 4] << " to "
+                       << get_command_name(current_command) << " at l" << pos[0]
+                       << 'c' << pos[1] << std::endl;
+        }
+        switch (current_command) {
             default: {
                 // Ignore unrecognized character
             }
