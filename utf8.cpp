@@ -30,68 +30,68 @@ std::string utf8_encode(char32_t codepoint) {
 }
 
 std::string from_unicodepoints(std::vector<char32_t> codepoints) {
-    std::string result = "";
-    for (uint64_t i=0; i<codepoints.size(); i++)
+    std::string result= "";
+    for (uint64_t i= 0; i < codepoints.size(); i++)
         result.append(utf8_encode(codepoints[i]));
     return result;
 }
 
 std::vector<char32_t> unicodepoints(std::string source_string) {
     std::vector<char32_t> result;
-    size_t i = 0;
+    size_t i= 0;
     while (i < source_string.size()) {
-        uint8_t byte = static_cast<uint8_t>(source_string[i]);
-        char32_t codepoint = 0;
-        size_t remaining = 0;
-        
+        uint8_t byte      = static_cast<uint8_t>(source_string[i]);
+        char32_t codepoint= 0;
+        size_t remaining  = 0;
+
         if (byte <= 0x7F) {
-            codepoint = byte;
-            remaining = 0;
+            codepoint= byte;
+            remaining= 0;
         } else if ((byte >> 5) == 0b110) {
-            codepoint = byte & 0x1F;
-            remaining = 1;
+            codepoint= byte & 0x1F;
+            remaining= 1;
         } else if ((byte >> 4) == 0b1110) {
-            codepoint = byte & 0x0F;
-            remaining = 2;
+            codepoint= byte & 0x0F;
+            remaining= 2;
         } else if ((byte >> 3) == 0b11110) {
-            codepoint = byte & 0x07;
-            remaining = 3;
+            codepoint= byte & 0x07;
+            remaining= 3;
         } else {
             result.push_back(INVALID);
             ++i;
             continue;
         }
-        
+
         if (i + remaining >= source_string.size()) {
             result.push_back(INVALID);
             ++i;
             continue;
         }
-        
-        bool valid = true;
-        for (size_t j = 0; j < remaining; j++) {
-            uint8_t next_byte = static_cast<uint8_t>(source_string[i + 1 + j]);
+
+        bool valid= true;
+        for (size_t j= 0; j < remaining; j++) {
+            uint8_t next_byte= static_cast<uint8_t>(source_string[i + 1 + j]);
             if ((next_byte >> 6) != 0b10) {
-                valid = false;
+                valid= false;
                 break;
             }
-            codepoint = (codepoint << 6) | (next_byte & 0x3F);
+            codepoint= (codepoint << 6) | (next_byte & 0x3F);
         }
-        
+
         if (valid) {
             result.push_back(codepoint);
-            i += 1 + remaining;
+            i+= 1 + remaining;
         } else {
             result.push_back(INVALID);
             i++;
         }
     }
-    
+
     return result;
 }
 
 char32_t utf8_decode(const std::string& str) {
-    std::vector<char32_t> decoded = unicodepoints(str);
+    std::vector<char32_t> decoded= unicodepoints(str);
     if (!decoded.empty()) {
         return decoded[0];
     }
