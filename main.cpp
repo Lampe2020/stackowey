@@ -1,7 +1,7 @@
 // kate: replace-tabs on; indent-width 4; indent-mode cstyle;
 // #include "bitset.hpp" // Commented out until it's needed, to silence code check warning
 #include "magic_enum.hpp"
-#include <codecvt>
+#include "utf8.cpp"
 #include <cstdint>
 #include <cstring>
 #include <ctime>
@@ -66,11 +66,6 @@ void error_out(ErrorCode err, std::string msg) {
     std::exit(err);
 }
 
-std::wstring unicodepoints(std::string source_string) {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-    return converter.from_bytes(source_string);
-}
-
 void read_source_from_stream(std::istream& source) {
     source_from_stdin= (&source == &std::cin);
     if (source.fail())
@@ -101,14 +96,31 @@ void read_source(const char* source_path) {
 }
 
 void get_input() {
+    if (dev_mode)
+        debug_info << "Waiting for user input." << std::endl;
     std::string line;
     std::getline(std::cin, line);
+    if (dev_mode)
+        debug_info << "Got input from user:\n" << line << std::endl;
     uint64_t next_stack_value;
-    std::wstring unicode_line= unicodepoints(line);
+    std::vector<char32_t> unicode_line= unicodepoints(line);
     for (uint64_t i= 0; i < line.size(); i++) {
         stack.push_back(uint64_t(unicode_line[i]));
     }
     stack.push_back(0ull);
+}
+
+void send_output() {
+    if (dev_mode)
+        debug_info << "Outputting U+" << stack.back() << std::endl;
+    std::cout << utf8_encode(stack.back()%UINT32_MAX); // Modulo to prevent invalid codepoint
+    stack.pop_back(); // Actually remove the value from the stack
+}
+
+void log_instruction() {
+    
+    if (dev_mode)
+        debug_info << 0;
 }
 
 int main(int argc, char* argv[], char* envp[]) {
@@ -141,7 +153,7 @@ int main(int argc, char* argv[], char* envp[]) {
     while (true) {
         if (dev_mode)
             debug_info << "";
-        switch (playfield[pos[0]%playfield.size()][pos[1]%linelen]) {
+        switch (playfield[pos[0] % playfield.size()][pos[1] % linelen]) {
             default: {
                 // Ignore unrecognized character
             }
