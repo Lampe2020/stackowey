@@ -61,7 +61,7 @@ void error_out(ErrorCode err, std::string msg) {
     } else if (err == E_EXIT)
         std::exit(0);
     else
-        std::cerr << "Uncaught " << getErrorName(err) << '[' << err << ']' << ": "
+        std::cerr << getErrorName(err) << '[' << err << ']' << ": "
                   << ((bool)msg.size() ? msg : std::to_string(err)) << std::endl;
     std::exit(err);
 }
