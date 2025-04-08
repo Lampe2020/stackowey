@@ -31,8 +31,8 @@ std::string utf8_encode(char32_t codepoint) {
 
 std::string from_unicodepoints(std::vector<char32_t> codepoints) {
     std::string result= "";
-    for (uint64_t i= 0; i < codepoints.size(); i++)
-        result.append(utf8_encode(codepoints[i]));
+    for (char32_t codepoint : codepoints)
+        result.append(utf8_encode(codepoint));
     return result;
 }
 
