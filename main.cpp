@@ -183,7 +183,7 @@ int main(int argc, char* argv[], char* envp[]) {
                 // Ignore unrecognized character
             }
         }
-        direction= Direction(direction & 0b11); // Ensure the direction cannotbe invalid
+        direction= Direction(direction & 0b11); // Ensure the direction cannot be invalid
         switch (direction) {
             case RIGHT: {
                 pos[1]++;
