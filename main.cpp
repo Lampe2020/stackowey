@@ -1,6 +1,7 @@
 // kate: replace-tabs on; indent-width 4; indent-mode cstyle;
-#include "bitset.hpp"
+// #include "bitset.hpp" // Commented out until it's needed, to silence code check warning
 #include "magic_enum.hpp"
+#include <codecvt>
 #include <cstdint>
 #include <cstring>
 #include <ctime>
