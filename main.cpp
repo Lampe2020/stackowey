@@ -16,7 +16,7 @@ bool dev_mode         = false;
 std::ofstream debug_info;
 std::vector<uint64_t> stack{ 42 };
 std::vector<std::string> playfield;
-uint64_t pos[2]= { 0, 0 };
+uint64_t pos[2]= { 0ull, 0ull };
 std::vector<std::string> input;
 
 void cleanup() {
