@@ -113,7 +113,7 @@ void get_input() {
 void send_output() {
     if (dev_mode)
         debug_info << "Outputting U+" << stack.back() << std::endl;
-    std::cout << utf8_encode(stack.back()%UINT32_MAX); // Modulo to prevent invalid codepoint
+    std::cout << utf8_encode(stack.back() % UINT32_MAX); // Modulo to prevent invalid codepoint
     stack.pop_back(); // Actually remove the value from the stack
 }
 
