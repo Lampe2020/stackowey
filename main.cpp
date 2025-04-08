@@ -11,13 +11,23 @@
 #include <string>
 #include <vector>
 
+enum Direction {
+    RIGHT= uint8_t(0),
+    DOWN = uint8_t(1),
+    LEFT = uint8_t(2),
+    UP   = uint8_t(3),
+};
+
 bool source_from_stdin= false;
 bool dev_mode         = false;
+std::ifstream source_filestream;
 std::ofstream debug_info;
-std::vector<uint64_t> stack{ 42 };
-std::vector<std::string> playfield;
+std::vector<uint64_t> stack{ 42ull };
+std::vector<const char*> playfield;
+uint64_t linelen;
 uint64_t pos[2]= { 0ull, 0ull };
 std::vector<std::string> input;
+Direction direction= RIGHT;
 
 void cleanup() {
     std::cerr.flush();
@@ -29,7 +39,14 @@ void cleanup() {
     }
 }
 
-enum ErrorCode { E_SUCCESS= 0, E_EXIT= 1, E_SYNTAX= 2 };
+enum ErrorCode {
+    E_SUCCESS = uint8_t(0),
+    E_EXIT    = uint8_t(1),
+    E_SYNTAX  = uint8_t(2),
+    E_3D      = uint8_t(3),
+    E_STREAM_R= uint8_t(4),
+    E_STREAM_W= uint8_t(5)
+};
 
 std::string getErrorName(ErrorCode err) {
     auto name= magic_enum::enum_name(err);
@@ -49,7 +66,12 @@ void error_out(ErrorCode err, std::string msg) {
     std::exit(err);
 }
 
-bool read_source_from_stream(std::istream& source) {
+std::wstring unicodepoints(std::string source_string) {
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+    return converter.from_bytes(source_string);
+}
+
+void read_source_from_stream(std::istream& source) {
     source_from_stdin= (&source == &std::cin);
     if (source.fail())
         error_out(E_STREAM_R, "Could not read source stream!");
@@ -57,34 +79,36 @@ bool read_source_from_stream(std::istream& source) {
     std::getline(source, line);
     if (line[0] == '#' && line[1] == '!')
         std::getline(source, line); // Ignore the shebang line if it exists
-    playfield.push_back(line);
-    const uint64_t linesize= playfield[0].size();
+    playfield.push_back(line.c_str());
+    linelen= line.size();
+    debug_info << "Detected width " << linelen << std::endl;
     while (std::getline(source, line) &&
            !(source_from_stdin && line == "---")) {
-        if (line.size() != linesize)
-            error_out(E_SYNTAX, "Source file malformatted: not rectangular!");
-        playfield.push_back(line);
+        if (line.size() != linelen)
+            error_out(E_SYNTAX, "The eastward edge is too rough!");
+        playfield.push_back(line.c_str());
     }
-    return true;
 }
 
-bool read_source(const char* source_path) {
+void close_source() {
+    source_filestream.close();
+}
+
+void read_source(const char* source_path) {
     std::ifstream source(source_path);
-    return read_source_from_stream(source);
-}
-
-uint64_t as_unicodepoint(char c) {
-    // TODO: Implement converting the incoming unicode characters to
-    return 0ull; // tmp
+    std::atexit(close_source);
+    read_source_from_stream(source);
 }
 
 void get_input() {
     std::string line;
     std::getline(std::cin, line);
     uint64_t next_stack_value;
-    for (int i= 0; i < line.size(); i++) {}
-    next_stack_value= 0;
-    stack.push_back(next_stack_value); // FIXME
+    std::wstring unicode_line= unicodepoints(line);
+    for (uint64_t i= 0; i < line.size(); i++) {
+        stack.push_back(uint64_t(unicode_line[i]));
+    }
+    stack.push_back(0ull);
 }
 
 int main(int argc, char* argv[], char* envp[]) {
@@ -94,8 +118,8 @@ int main(int argc, char* argv[], char* envp[]) {
 
     if (argc == 1) {
         std::cout << "End the program with a line of only three dashes "
-                     "(\"---\", with no other characters before or after) to "
-                     "separate it from its input"
+                     "(\"---\", with no spaces or other characters before or "
+                     "after) to separate it from its input"
                   << std::endl;
         read_source_from_stream(std::cin);
     } else if (argc >= 2 && argv[1][0] != '-') {
@@ -107,15 +131,43 @@ int main(int argc, char* argv[], char* envp[]) {
             debug_info.open("./swy.log");
             debug_info << "--- start of log ---" << std::endl;
         }
-        if (argc >= 2)
-            read_source(argv[2]);
+        if (argc >= 3)
+            read_source(argv[2]); // FIXME: Why does this crash?
         else
             read_source_from_stream(std::cin);
     } else
         read_source(argv[1]);
 
     while (true) {
-        break; // tmp
+        if (dev_mode)
+            debug_info << "";
+        switch (playfield[pos[0]%playfield.size()][pos[1]%linelen]) {
+            default: {
+                // Ignore unrecognized character
+            }
+        }
+        direction= Direction(direction & 0b11); // Ensure the direction cannotbe invalid
+        switch (direction) {
+            case RIGHT: {
+                pos[1]++;
+                break;
+            }
+            case DOWN: {
+                pos[0]++;
+                break;
+            }
+            case LEFT: {
+                pos[1]--;
+                break;
+            }
+            case UP: {
+                pos[0]--;
+                break;
+            }
+            default: {
+                error_out(E_3D, "I'm flattered!");
+            }
+        }
     }
 
     return 0;
