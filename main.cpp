@@ -38,11 +38,8 @@ std::string getErrorName(ErrorCode err) {
 
 void error_out(ErrorCode err, std::string msg) {
     if (err == E_SUCCESS) {
-        std::cerr << getErrorName(err) << '[' << err << "]: "
-                  << (((bool)(time(NULL) % 2)) ?
-                      "Mission accomplished. That’s the problem" :
-                      "Unexpected lack of failure")
-                  << '.' << std::endl;
+        std::cerr << getErrorName(err) << '[' << err
+                  << "]: Unexpected lack of failure." << std::endl;
         return; // Try to continue
     } else if (err == E_EXIT)
         std::exit(0);
