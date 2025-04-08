@@ -52,7 +52,7 @@ void error_out(ErrorCode err, std::string msg) {
 bool read_source_from_stream(std::istream& source) {
     source_from_stdin= (&source == &std::cin);
     if (source.fail())
-        return false;
+        error_out(E_STREAM_R, "Could not read source stream!");
     std::string line;
     std::getline(source, line);
     if (line[0] == '#' && line[1] == '!')
