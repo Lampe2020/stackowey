@@ -66,11 +66,10 @@ void cleanup() {
 
 enum ErrorCode {
     E_SUCCESS = uint8_t(0),
-    E_EXIT    = uint8_t(1),
-    E_SYNTAX  = uint8_t(2),
-    E_3D      = uint8_t(3),
-    E_STREAM_R= uint8_t(4),
-    E_STREAM_W= uint8_t(5)
+    E_SYNTAX  = uint8_t(1),
+    E_3D      = uint8_t(2),
+    E_STREAM_R= uint8_t(3),
+    E_STREAM_W= uint8_t(4)
 };
 
 std::string getErrorName(ErrorCode err) {
@@ -86,11 +85,6 @@ void error_out(ErrorCode err, std::string msg) {
             debug_info << getErrorName(err) << '[' << std::dec << err
                        << "]: Unexpected lack of failure!" << std::endl;
         return; // Try to continue
-    } else if (err == E_EXIT) {
-        std::exit(0);
-        if (dev_mode)
-            debug_info << "Exiting by exit error with message\n"
-                       << msg << std::endl;
     } else {
         std::cerr << getErrorName(err) << '[' << std::dec << err << ']' << ": "
                   << ((bool)msg.size() ? msg : std::to_string(err)) << std::endl;
