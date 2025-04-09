@@ -124,8 +124,8 @@ uint64_t pop_stack() {
         static std::mt19937_64 random_number_gen(std::random_device{}());
         value= random_number_gen();
         if (dev_mode)
-            debug_info << "Stack was empty!\n    Generated random value 0o"
-                       << std::oct << value << " instead" << std::dec << std::endl;
+            debug_info << "Stack was empty!\nGenerated random value 0o" << std::oct
+                       << value << " instead" << std::dec << std::endl;
     }
     if (dev_mode)
         debug_info << "Stack size is now 0o" << stack.size() << '.' << std::dec
@@ -136,7 +136,7 @@ uint64_t pop_stack() {
 void push_stack(uint64_t value) {
     stack.push_back(value);
     if (dev_mode)
-        debug_info << "Pushed value 0o" << std::oct << value << " to stack.\nStack size is now 0o"
+        debug_info << "Pushed value 0o" << std::oct << value << " to stack\nStack size is now 0o"
                    << std::oct << stack.size() << '.' << std::dec << std::endl;
 }
 
