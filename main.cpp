@@ -398,7 +398,7 @@ int main(int argc, char* argv[], char* envp[]) {
                 break;
             }
             case DOWN: {
-                pos[0]--; // Decrement line number (Note: playfield is upside-down!)
+                pos[0]--; // Decrement line number (Note: playfield is upside-down internally!)
                 break;
             }
             case LEFT: {
@@ -406,7 +406,7 @@ int main(int argc, char* argv[], char* envp[]) {
                 break;
             }
             case UP: {
-                pos[0]++; // Increment line number (Note: playfield is upside-down!)
+                pos[0]++; // Increment line number (Note: playfield is upside-down internally!)
                 break;
             }
             default: {
