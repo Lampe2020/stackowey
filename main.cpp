@@ -224,6 +224,10 @@ int main(int argc, char* argv[], char* envp[]) {
         if (strcmp(argv[1], "-d") == 0 || strcmp(argv[1], "--dev") == 0) {
             dev_mode= true;
             debug_info.open("./swy.log");
+            if (debug_info.fail()) {
+                dev_mode= false;
+                error_out(E_STREAM_W, "Could not open 'swy.log' in current working directory for writing!");
+            }
             debug_info << "--- start of log ---\n" << std::endl;
         }
         if (argc >= 3)
