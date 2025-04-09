@@ -43,7 +43,7 @@ bool source_from_stdin= false;
 bool dev_mode         = false;
 std::ifstream source_filestream;
 std::ofstream debug_info;
-std::vector<uint64_t> stack{ 42ull };
+std::vector<uint64_t> stack{ 042ull }; // The stack starts out with a single octal 42
 std::vector<std::string> playfield;
 uint64_t linelen;
 uint64_t pos[2]= { 0ull, 0ull };
