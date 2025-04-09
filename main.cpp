@@ -55,7 +55,10 @@ void cleanup() {
     std::cerr.flush();
     std::cout.flush();
     if (dev_mode) {
-        debug_info << "\n--- end of log ---" << std::endl;
+        debug_info << "Final stack state:\n[\n" << std::oct;
+        for (uint64_t stack_element : stack)
+            debug_info << "    0o" << stack_element << '\n';
+        debug_info << "]\n\n--- end of log ---" << std::dec << std::endl;
         debug_info.flush();
         debug_info.close();
     }
