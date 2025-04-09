@@ -202,7 +202,7 @@ int main(int argc, char* argv[], char* envp[]) {
                 break;
             }
             default: {
-                error_out(E_3D, "I'm flattered!");
+                error_out(E_3D, "I'm flat___. However, you should've come better prepared.");
             }
         }
     }
