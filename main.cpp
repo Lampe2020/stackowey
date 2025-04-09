@@ -172,12 +172,10 @@ int main(int argc, char* argv[], char* envp[]) {
         pos[0]         = pos[0] % playfield.size();
         pos[1]         = pos[1] % linelen;
         current_command= playfield[pos[0]][pos[1]];
-        if (dev_mode) {
-
+        if (dev_mode)
             debug_info << "Moving " << direction_names[direction % 4] << " to "
-                       << get_command_name(current_command) << " at l" << pos[0]
-                       << 'c' << pos[1] << std::endl;
-        }
+                       << get_command_name(current_command) << '[' << current_command
+                       << ']' << " at l" << pos[0] << 'c' << pos[1] << std::endl;
         switch (current_command) {
             default: {
                 // Ignore unrecognized character
