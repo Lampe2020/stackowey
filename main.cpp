@@ -20,7 +20,7 @@ enum Direction {
     UP   = uint8_t(3),
 };
 
-const char* direction_names[4]= { "east", "north", "west", "south" };
+const char* direction_names[4]= { "east", "north", "west", "south" }; // FIXME: Why are "north" and "south" swapped compared to Direction?
 const std::map<const char, const char*> command_names= {
     { '/', "bounce" },  { '\\', "backbounce" }, { '?', "huh" },
     { '!', "hah" },     { '%', "splot" },       { '0', "oh" },
@@ -240,11 +240,12 @@ int main(int argc, char* argv[], char* envp[]) {
     if (linelen == 0 || playfield.size() == 0)
         error_out(E_SYNTAX, "Gimme nuffin', get nuffin'.");
     while (true) {
+        // Modulo to loop around instead of running off playfield.
         pos[0]         = pos[0] % playfield.size();
         pos[1]         = pos[1] % linelen;
         current_command= playfield[pos[0]][pos[1]];
         if (dev_mode)
-            debug_info << "Moved " << direction_names[direction % 4] << " to "
+            debug_info << "Moved " << direction_names[direction] << " to "
                        << get_command_name(current_command) << " at l:0o" << std::oct
                        << pos[0] << ",c:0o" << pos[1] << std::dec << std::endl;
         switch (current_command) {
@@ -252,9 +253,11 @@ int main(int argc, char* argv[], char* envp[]) {
                 uint64_t values[2]= { pop_stack(), pop_stack() };
                 if (values[0] > values[1]) {
                     if (direction == RIGHT || direction == LEFT)
-                        direction= Direction(direction + 1);
+                        direction=
+                        Direction((static_cast<uint8_t>(direction) + 1 + 4) % 4); // +4 to avoid ever going negative
                     else
-                        direction= Direction(direction - 1);
+                        direction=
+                        Direction((static_cast<uint8_t>(direction) - 1 + 4) % 4); // +4 to avoid ever going negative
                 } else {
                     // Ignore this potential turn
                 }
@@ -264,9 +267,11 @@ int main(int argc, char* argv[], char* envp[]) {
                 uint64_t values[2]= { pop_stack(), pop_stack() };
                 if (values[0] > values[1]) {
                     if (direction == RIGHT || direction == LEFT)
-                        direction= Direction(direction - 1);
+                        direction=
+                        Direction((static_cast<uint8_t>(direction) - 1 + 4) % 4); // +4 to avoid ever going negative
                     else
-                        direction= Direction(direction + 1);
+                        direction=
+                        Direction((static_cast<uint8_t>(direction) + 1 + 4) % 4); // +4 to avoid ever going negative
                 } else {
                     // Ignore this potential turn
                 }
@@ -367,22 +372,22 @@ int main(int argc, char* argv[], char* envp[]) {
                 // Ignore unrecognized character
             }
         }
-        direction= Direction(direction & 0b11); // Ensure the direction cannot be invalid
+        direction= Direction(static_cast<uint8_t>(direction) % 4);
         switch (direction) {
             case RIGHT: {
-                pos[1]++;
+                pos[1]++; // Increment column number
                 break;
             }
             case DOWN: {
-                pos[0]++;
+                pos[0]--; // Decrement line number (Note: playfield is upside-down!)
                 break;
             }
             case LEFT: {
-                pos[1]--;
+                pos[1]--; // Decrement column number
                 break;
             }
             case UP: {
-                pos[0]--;
+                pos[0]++; // Increment line number (Note: playfield is upside-down!)
                 break;
             }
             default: {
