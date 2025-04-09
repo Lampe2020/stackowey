@@ -19,7 +19,7 @@ enum Direction {
     UP   = uint8_t(3),
 };
 
-const char* direction_names[4]= { "east", "south", "west", "north" };
+const char* direction_names[4]= { "east", "north", "west", "south" };
 const std::map<const char, const char*> command_names= {
     { '/', "bounce" },  { '\\', "backbounce" }, { '?', "huh" },
     { '!', "hah" },     { '%', "splot" },       { '0', "oh" },
