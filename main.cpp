@@ -81,10 +81,10 @@ std::string getErrorName(ErrorCode err) {
 void error_out(ErrorCode err, std::string msg) {
     if (err == E_SUCCESS) {
         std::cerr << getErrorName(err) << '[' << std::dec << err
-                  << "]: Unexpected lack of failure." << std::endl;
+                  << "]: Unexpected lack of failure!" << std::endl;
         if (dev_mode)
             debug_info << getErrorName(err) << '[' << std::dec << err
-                       << "]: Unexpected lack of failure." << std::endl;
+                       << "]: Unexpected lack of failure!" << std::endl;
         return; // Try to continue
     } else if (err == E_EXIT) {
         std::exit(0);
@@ -97,7 +97,7 @@ void error_out(ErrorCode err, std::string msg) {
         if (dev_mode)
             debug_info << getErrorName(err) << '[' << std::dec << err << ']'
                        << ": " << ((bool)msg.size() ? msg : std::to_string(err))
-                       << "\nExiting because of error." << std::endl;
+                       << "\nExiting because of error!" << std::endl;
         std::exit(err);
     }
 }
