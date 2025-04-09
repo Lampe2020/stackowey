@@ -262,8 +262,14 @@ int main(int argc, char* argv[], char* envp[]) {
                     else
                         direction=
                         Direction((static_cast<uint8_t>(direction) - 1 + 4) % 4); // +4 to avoid ever going negative
+                    if (dev_mode)
+                        debug_info << "Bounced off to the "
+                                   << direction_names[direction] << std::endl;
                 } else {
                     // Ignore this potential turn
+                    if (dev_mode)
+                        debug_info << "value[0]<=value[1], continuing to the "
+                                   << direction_names[direction] << std::endl;
                 }
                 break;
             }
@@ -276,8 +282,14 @@ int main(int argc, char* argv[], char* envp[]) {
                     else
                         direction=
                         Direction((static_cast<uint8_t>(direction) + 1 + 4) % 4); // +4 to avoid ever going negative
+                    if (dev_mode)
+                        debug_info << "Bounced off to the "
+                                   << direction_names[direction] << std::endl;
                 } else {
                     // Ignore this potential turn
+                    if (dev_mode)
+                        debug_info << "value[0]>=value[1], continuing to the "
+                                   << direction_names[direction] << std::endl;
                 }
                 break;
             }
@@ -292,6 +304,9 @@ int main(int argc, char* argv[], char* envp[]) {
             case '%': {
                 pos[0]= pop_stack();
                 pos[1]= pop_stack();
+                if (dev_mode)
+                    debug_info << "Teleported to l:0o" << std::oct << pos[0]
+                               << ",c:0o" << pos[1] << std::dec << std::endl;
                 break;
             }
             case '0': {
@@ -398,6 +413,9 @@ int main(int argc, char* argv[], char* envp[]) {
                 error_out(E_3D, "I'm flat___. However, you should've come better prepared.");
             }
         }
+
+        if (dev_mode)
+            debug_info << std::endl;
     }
 
     return 0;
