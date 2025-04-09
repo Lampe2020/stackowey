@@ -269,7 +269,7 @@ int main(int argc, char* argv[], char* envp[]) {
             }
             case '\\': {
                 uint64_t values[2]= { pop_stack(), pop_stack() };
-                if (values[0] > values[1]) {
+                if (values[0] < values[1]) {
                     if (direction == RIGHT || direction == LEFT)
                         direction=
                         Direction((static_cast<uint8_t>(direction) - 1 + 4) % 4); // +4 to avoid ever going negative
