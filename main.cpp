@@ -44,7 +44,7 @@ bool dev_mode         = false;
 std::ifstream source_filestream;
 std::ofstream debug_info;
 std::vector<uint64_t> stack{ 42ull };
-std::vector<const char*> playfield;
+std::vector<std::string> playfield;
 uint64_t linelen;
 uint64_t pos[2]= { 0ull, 0ull };
 std::vector<std::string> input;
@@ -95,14 +95,14 @@ void read_source_from_stream(std::istream& source) {
     std::getline(source, line);
     if (line[0] == '#' && line[1] == '!')
         std::getline(source, line); // Ignore the shebang line if it exists
-    playfield.push_back(line.c_str());
+    playfield.push_back(line);
     linelen= line.size();
     debug_info << "Detected width " << linelen << std::endl;
     while (std::getline(source, line) &&
            !(source_from_stdin && line == "---")) {
         if (line.size() != linelen)
             error_out(E_SYNTAX, "The eastward edge is too rough!");
-        playfield.push_back(line.c_str());
+        playfield.push_back(line);
     }
 }
 
