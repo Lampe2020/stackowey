@@ -374,10 +374,10 @@ int main(int argc, char* argv[], char* envp[]) {
                 break;
             }
             case '8': {
-                if (dev_mode)
-                    debug_info << "Pushing coordinates to stack..." << std::endl;
                 push_stack(pos[0]);
                 push_stack(pos[1]);
+                if (dev_mode)
+                    debug_info << "Pushed coordinates to stack" << std::endl;
                 break;
             }
             case '9': {
