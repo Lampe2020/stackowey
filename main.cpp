@@ -126,8 +126,7 @@ uint64_t pop_stack() {
                        << value << " instead" << std::dec << std::endl;
     }
     if (dev_mode)
-        debug_info << "Stack size is now 0o" << stack.size() << std::dec
-                   << std::endl;
+        debug_info << "Stack size is now 0o" << stack.size() << std::dec << std::endl;
     return value;
 }
 
