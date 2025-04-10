@@ -384,6 +384,9 @@ int main(int argc, char* argv[], char* envp[]) {
                 uint64_t value_i= stack[i];
                 stack[i]        = pop_stack();
                 push_stack(value_i);
+                if (dev_mode)
+                    debug_info << "Swapped 0o" << n_th(raw_i)
+                               << " (from the top) and top stack element" << std::endl;
                 break;
             }
             case '@': {
