@@ -10,6 +10,7 @@
 #include <locale>
 #include <map>
 #include <random>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -94,6 +95,28 @@ void error_out(ErrorCode err, std::string msg) {
                        << "\nExiting because of error!" << std::endl;
         std::exit(err);
     }
+}
+
+std::string n_th(uint64_t n) {
+    std::stringstream num_s;
+    num_s << std::oct << n;
+    std::string num= num_s.str();
+    switch (num[num.size() - 1]) {
+        case '1': {
+            num_s << "st";
+            break;
+        }
+        case '2': {
+            num_s << "nd";
+            break;
+        }
+        case '3': {
+            num_s << "rd";
+            break;
+        }
+        default: num_s << "th";
+    }
+    return num_s.str();
 }
 
 std::string n_times_char(uint64_t n, char c) {
@@ -347,29 +370,33 @@ int main(int argc, char* argv[], char* envp[]) {
                 break;
             }
             case '#': {
-                if (stack.size() <= 1)
+                if (stack.size() == 0)
                     break;
                 uint64_t raw_i= pop_stack();
-                uint64_t i= (stack.size() - i) % stack.size(); // Choose a position inside the stack
+                if (raw_i >= stack.size()) {
+                    // Elements below the stack are random. Swapping with a random element is almost the same as just replacing the top value with a random one.
+                    pop_stack(); // This value gets swapped into the abyss and disappears
+                    push_stack(random_number());
+                    break;
+                }
+                uint64_t i= ((stack.size() - 1) - raw_i) %
+                            stack.size(); // Choose a position inside the stack
                 uint64_t value_i= stack[i];
                 stack[i]        = pop_stack();
                 push_stack(value_i);
                 break;
             }
             case '@': {
-                if (stack.size() <= 1) {
-                    if (dev_mode)
-                        debug_info << "Stack is too short, cannot swap values!"
-                                   << std::endl;
-                    break;
-                }
                 uint64_t raw_i= pop_stack();
-                uint64_t i= (stack.size() - i) % stack.size(); // Choose a position inside the stack
+                if (raw_i >= stack.size()) {
+                    push_stack(random_number()); // Copying an element from below the stack is the same as just pushing a random value
+                }
+                uint64_t i= ((stack.size() - 1) - raw_i) %
+                            stack.size(); // Choose a position inside the stack
                 push_stack(stack[i]);
                 if (dev_mode)
-                    debug_info << "Pushed copy of 0o" << std::oct << i
-                               << "th stack element (value 0o" << stack.back()
-                               << ") to stack" << std::dec << std::endl;
+                    debug_info << "Copy of 0o" << n_th(i) << " stack element pushed to stack"
+                               << std::dec << std::endl;
                 break;
             }
             case '8': {
