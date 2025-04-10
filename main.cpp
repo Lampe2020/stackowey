@@ -106,6 +106,11 @@ std::string n_times_char(uint64_t n, char c) {
     return sequence.data();
 }
 
+uint64_t random_number() {
+    static std::mt19937_64 random_number_gen(std::random_device{}());
+    return random_number_gen();
+}
+
 uint64_t pop_stack() {
     uint64_t value;
     if (stack.size()) {
@@ -115,8 +120,7 @@ uint64_t pop_stack() {
             debug_info << "Popped value 0o" << std::oct << value << " off stack"
                        << std::endl;
     } else {
-        static std::mt19937_64 random_number_gen(std::random_device{}());
-        value= random_number_gen();
+        value= random_number();
         if (dev_mode)
             debug_info << "Stack was empty!\nGenerated random value 0o" << std::oct
                        << value << " instead" << std::dec << std::endl;
