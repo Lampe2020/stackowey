@@ -314,6 +314,8 @@ int main(int argc, char* argv[], char* envp[]) {
                 break;
             }
             case '?': {
+                if (std::cin.fail())
+                    error_out(E_STREAM_R, "STDIN cancelled!");
                 get_input();
                 break;
             }
