@@ -1,0 +1,12 @@
+#!/usr/bin/env -S ./stackowey -d
+Output the string "Hello World" by calculating its unicode values: 77777777772++++++++++ (push fourty-eight to stack) 1221\
+/2112                  Move all the way to the left again to make the code a little easier to understand                  /
+\0@ (duplicate the top stack value) ! (output the top stack value, thereby consuming it) 77771+++++0@! ("e")          1221\
+/2112                                                                                                                     /
+\7+0@0@!! ("ll") 3+0@! ("o") 77774++++! (" " not based on "o") 0@71++! ("w" and discard it from stack) 0@! ("o")      1221\
+/2112                                                                                                                     /
+\ 3+0@! ("r") Now we need to subtract, so let's do that: 5_+ (inverted(b minus one) plus a equals a minus b)          1221\
+/2112                                                                                                                     /
+\ 0@! ("l") 7_+! ("d" and discarded from stack) 0_+! (exclamation point based on default fourty-two from stack)       1221\
+/2112                                                                                                                     /
+\ 73+! (newline) 9 (halt)                                                                                                  
