@@ -216,7 +216,7 @@ void get_input() {
     for (uint64_t i= 0; i < line.size(); i++) {
         push_stack(uint64_t(unicode_line[i]));
     }
-    stack.push_back(0ull);
+    push_stack(0);
 }
 
 void send_output() {
