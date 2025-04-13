@@ -28,7 +28,7 @@ const std::map<const char, const char*> command_names= {
     { '4', "fire" },    { '5', "lamp" },        { '6', "glorp" },
     { '7', "wa-ding" }, { '+', "cross" },       { '_', "stumble" },
     { '#', "grille" },  { '@', "whirlpool" },   { '8', "dubring" },
-    { '9', "tailring" }
+    { '.', "prick" },   { '9', "tailring" }
 };
 
 std::string get_command_name(char command) {
@@ -401,6 +401,10 @@ int main(int argc, char* argv[], char* envp[]) {
                 if (dev_mode)
                     debug_info << "Copy of 0o" << n_th(raw_i) << " stack element pushed to stack"
                                << std::dec << std::endl;
+                break;
+            }
+            case '.': {
+                pop_stack();
                 break;
             }
             case '8': {
