@@ -399,7 +399,7 @@ int main(int argc, char* argv[], char* envp[]) {
                             stack.size(); // Choose a position inside the stack
                 push_stack(stack[i]);
                 if (dev_mode)
-                    debug_info << "Copy of 0o" << n_th(i) << " stack element pushed to stack"
+                    debug_info << "Copy of 0o" << n_th(raw_i) << " stack element pushed to stack"
                                << std::dec << std::endl;
                 break;
             }
