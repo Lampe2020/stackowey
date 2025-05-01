@@ -405,6 +405,8 @@ int main(int argc, char* argv[], char* envp[]) {
             }
             case '.': {
                 pop_stack();
+                if (dev_mode)
+                    debug_info << "Popped a stack value into the abyss" << std::endl;
                 break;
             }
             case '8': {
