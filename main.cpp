@@ -3,7 +3,6 @@
 #include "utf8.cpp"
 #include <cstdint>
 #include <cstring>
-#include <ctime>
 #include <fstream>
 #include <iostream>
 #include <locale>
