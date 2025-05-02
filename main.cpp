@@ -21,13 +21,13 @@ enum Direction {
 
 const char* direction_names[4]= { "east", "north", "west", "south" }; // FIXME: Why are "north" and "south" swapped compared to Direction?
 const std::map<const char, const char*> command_names= {
-    { '/', "bounce" },  { '\\', "backbounce" }, { '?', "huh" },
-    { '!', "hah" },     { '%', "splot" },       { '0', "oh" },
-    { '1', "itch" },    { '2', "nigh" },        { '3', "chan" },
-    { '4', "fire" },    { '5', "lamp" },        { '6', "glorp" },
-    { '7', "wa-ding" }, { '+', "cross" },       { '_', "stumble" },
-    { '#', "grille" },  { '@', "whirlpool" },   { '8', "dubring" },
-    { '.', "prick" },   { '9', "tailring" }
+    { '/', "bounce" },   { '\\', "backbounce" }, { '?', "huh" },
+    { '!', "hah" },      { '%', "splot" },       { '0', "oh" },
+    { '1', "itch" },     { '2', "nigh" },        { '3', "chan" },
+    { '4', "fire" },     { '5', "lamp" },        { '6', "glorp" },
+    { '7', "wa-ding" },  { '+', "cross" },       { '_', "stumble" },
+    { '#', "grille" },   { '@', "whirlpool" },   { '.', "prick" },
+    { '=', "sandwich" }, { '8', "dubring" },     { '9', "tailring" }
 };
 
 std::string get_command_name(char command) {
@@ -406,6 +406,13 @@ int main(int argc, char* argv[], char* envp[]) {
                 pop_stack();
                 if (dev_mode)
                     debug_info << "Popped a stack value into the abyss" << std::endl;
+                break;
+            }
+            case '=': {
+                push_stack(stack.size());
+                if (dev_mode)
+                    debug_info << "Pushed current stack size ("
+                               << stack.size() - 1 << ") to stack" << std::endl;
                 break;
             }
             case '8': {
