@@ -210,7 +210,6 @@ void get_input() {
     std::getline(std::cin, line);
     if (dev_mode)
         debug_info << "Got input from user:\n" << line << std::endl;
-    uint64_t next_stack_value;
     std::vector<char32_t> unicode_line= unicodepoints(line);
     for (char32_t character : unicode_line) {
         push_stack(static_cast<uint64_t>(character));
