@@ -121,7 +121,7 @@ std::string n_times_char(uint64_t n, char c) {
     std::vector<char> sequence;
     if (n < 1)
         return std::string(""); // Cannot put less than none into a string, so just return an empty string.
-    for (int i= 0; i < n; i++) {
+    for (uint64_t i= 0; i < n; i++) {
         sequence.push_back(c);
     }
     return sequence.data();
