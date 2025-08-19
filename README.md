@@ -6,6 +6,13 @@ To get a full and up-to-date description and definition of Stackowey, take a loo
 
 For an implementation in JavaScript, see [stackowey.js](https://lampe2020.github.io/stackowey-ide/stackowey.js).   
 
+## TODO
+- Reduce amount of supported instructions to minimum (e.g. no `.`, that would become `0@_1++`)   
+- Correct the behaviour of `?` (pushes `0` first, then the message, instead of pushing only the message and then a useless `0` afterwards)   
+- Make sure `cat.swy` is possible   
+- Figure out how to make subroutines   
+- Make sure multiplication and division are possible (i.e. figure out methods to implement subroutines for them)   
+
 ## Build instructions
 ### Linux
 1. Install G++ and git (should be in your distro's repos, so e.g. `sudo apt install -y g++ git` or `sudo pacman -Syu g++ git` (Note: commands _not_ verified!))
